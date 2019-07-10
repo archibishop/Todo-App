@@ -68,6 +68,26 @@ app.get('/api/v1/todos/:id', (req, res) => {
     })
 });
 
+// Delete single todo
+app.delete('/api/v1/todos/:id', (req, res) => {
+    const id = parseInt(req.params.id, 10);
+
+    db.map((todo, index) => {
+        if (todo.id === id) {
+            db.splice(index, 1)
+            return res.status(200).send({
+                success: 'true',
+                message: 'Todo has been deleted successfully.'
+            })
+        }
+    });
+
+    return res.status(404).send({
+        success: 'false',
+        message: 'Todo does not exist'
+    })
+})
+
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
